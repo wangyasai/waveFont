@@ -49,18 +49,20 @@ function draw(){
     pg.text(options.Text,width/2,height/2);
   }
   drawLine(); 
-  // image(pg,0,0); 
   pop();
 }
+
 
 
 function drawLine(){
   pg.loadPixels();
   strokeWeight(options.StrokeWeight);
+
+
   for(var y = 0; y < pg.height; y+=int(options.WaveY)){
-    if(type == 'SolidColor'){
+    if(options.StrokeMode == 'SolidColor'){
       stroke(options.Stroke1);
-    }else{
+    }else if(options.StrokeMode == 'Gradient'){
       var percent = norm(y, 0, pg.height);
       var between = lerpColor(color(options.Stroke1), color(options.Stroke2), percent);
       stroke(between);
@@ -84,7 +86,7 @@ function drawLine(){
       }
 
       if(value > options.Brightness){
-        if(options.Smooth == true){
+        if(options.Smooth == true){       
           if(options.Animation == true){
             curveVertex(x, y+sin((frameCount/40+x/20+y/50))*10-20);
           }else{
@@ -108,6 +110,7 @@ function drawLine(){
       }
     }
     endShape();
+
 
     if(options.isFill == true){
       fill(options.Background);
