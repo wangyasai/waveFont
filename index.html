@@ -8,52 +8,53 @@
   <meta name="keywords" content="">
   <link href="" rel="stylesheet">
 
+  <!-- <link rel="icon" href="image/1.ico" type="image/x-icon"> -->
   <link rel="shortcut icon" href="image/1.ico" type="image/x-icon">
 
   <link rel="stylesheet" type="text/css" href="fonts.css">
 
   <script type="text/javascript" src="js/dat.gui.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
-  <script src="js/p5.svg.js"></script>
+  <script type="text/javascript" src="js/p5.min.js"></script>
+  <script type="text/javascript" src="js/p5.dom.min.js"></script>
+  <!-- <script type="text/javascript" src="js/p5.js"></script> -->
+  <!-- <script type="text/javascript" src="js/p5.svg.js"></script> -->
   <input id="img-path" type="file" />
 
   <style type="text/css">
-  *{
-    margin:0;
-    padding:0;
-  }
-  #credits {
-    font-size: 12px;
-    position: absolute;
-    bottom: -25px;
-    right: 15px;
-    color: #ffffff;
-    max-width: 70%;
-    text-align: right;
-    line-height: 20px;
-  }
-  .logo {
-    font-size: 12px;
-    position: absolute;
-    bottom: 80px;
-    left: 25px;
-    color: #ffffff;
-    max-width: 70%;
-    line-height: 20px;
-    opacity: 0.7;
-  }
-  .social{
-    opacity: 0.7;
-  }
-  .iconlink{
-    bottom: 50px;
-    margin-right: 0px;
-  }
-  #img-path {
-    display: none;
-  }
+   *{
+      margin:0;
+      padding:0;
+    }
+    #credits {
+      font-size: 12px;
+      position: absolute;
+      bottom: -25px;
+      right: 15px;
+      color: #ffffff;
+      max-width: 70%;
+      text-align: right;
+      line-height: 20px;
+    }
+    .logo {
+      font-size: 12px;
+      position: absolute;
+      bottom: 80px;
+      left: 25px;
+      color: #ffffff;
+      max-width: 70%;
+      line-height: 20px;
+      opacity: 0.7;
+    }
+    .social{
+      opacity: 0.7;
+    }
+    .iconlink{
+      bottom: 50px;
+      margin-right: 0px;
+    }
+    #img-path {
+      display: none;
+    }
 
 </style>
 
@@ -66,10 +67,12 @@
     s.parentNode.insertBefore(hm, s);
   })();
 </script>
+
 </head>
 
-
 <body>
+
+
  <div id="credits"> 
   <div class = "social" style="margin-right:10px">Created by @Yasai</div>
   <div class = "social" style="margin-right:10px; margin-bottom: -40px">©️All my products may be used in both personal and commercial projects   </div>
@@ -87,66 +90,60 @@
 
   var type;
   var options ={  
-    Background :'#1b1b1b',
+    Background :'#1a1028',
     isFill : true,
-    Fill : '#36f7b3',
-    StrokeMode : 'Gradient',
-    Stroke1 : '#02d0de',
-    Stroke2 : '#2c50b0',
-    StrokeWeight : 0.7,
+    Fill : '#f737bc',
+    Stroke : '#FFFFFF',
     steepDegree :0.001,
     WaveX: 10,
     WaveY: 10,
-    Brightness : 50,
+    Shape : 'Sphere',
+    Pattern : 'Pattern1',
     textWeight : 5,
     Image_DataURL :'',
     textSize: 200,
     Text : "WAVE FONT",
-    'Upload Image': function(){
-        // you need to create an input element in HTML, explained later
-        var input = document.getElementById('img-path');
-        input.addEventListener('change', function() {
-          var file = input.files[0];
-          r = new FileReader();
-          r.onload = function (){
-           gui['Image_DataURL'] = r.result;
-           p5LoadImage(r.result);
-           type='image';
-           draw();
-         }
-         r.readAsDataURL(file);
+    // 'Upload Image': function(){
+    //     // you need to create an input element in HTML, explained later
 
-         for (var i in gui.__controllers) {
-          gui.__controllers[i].updateDisplay();
-        }
-      });
-        input.click();
-      },
+    //     var input = document.getElementById('img-path');
+    //     input.addEventListener('change', function() {
+    //       var file = input.files[0];
+    //       r = new FileReader();
+    //       r.onload = function (){
+    //        gui['Image_DataURL'] = r.result;
+    //        p5LoadImage(r.result);
+    //        type='image';
+    //        draw();
+    //      }
+    //      r.readAsDataURL(file);
 
+    //      for (var i in gui.__controllers) {
+    //       gui.__controllers[i].updateDisplay();
+    //     }
+    //   });
+    //     input.click();
+    //   },
 
-      Smooth : true,
-      Animation : true,
+    
+    Wave : true,
+    Animation : true,
 
-      Random: function () { 
-        background(options.Background); 
-        options.Background  = random(['#FFE300', '#00EBA5','#111111','#f2f2f2']);
-        options.Fill = random(['#E632A5', '#580AFF','#005CFF']);
-        options.Stroke = random(['#FFFFFF','#000000' ]);
-        options.steepDegree = random(0.00001,1); 
-        options.textWeight = random(0,20);
-      },
+    Random: function () { 
+      background(options.Background); 
+      options.Background  = random(['#FFE300', '#00EBA5','#111111','#f2f2f2']);
+      options.Fill = random(['#E632A5', '#580AFF','#005CFF']);
+      options.Stroke = random(['#FFFFFF','#000000' ]);
+      options.Counts = random(25,40); 
+      options.steepDegree = random(0.00001,1); 
+      options.textWeight = random(0,20);
+    },
 
-      // Transparent: false,
-      // SVG: false,
-
-      Save: function(){
-        saveFrames("waveFont", "png", 1, 1);
-      },
-
-      SaveSVG: function(){
-        save("waveFont.svg");
-      }
-    }
+    SavePNG : false,
+    Save : function(){
+      saveFrames("Play-a-ball", "png", 1, 1);
+    },
+  }
 
 
 //upload icon
@@ -157,16 +154,13 @@ var GuiConfig = function() {
   };
 
 
-  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl, pngControl,SaveControl ,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl;
+  var text, gui, config,bgcolorControl,ShapeControl,LineControl,CountsCont,steepDegreeControl,RadiusControl,Radius2Control,RandomControl,imageControl,rolFillControl,StrokeControl, SpeedControl, pngControl,SaveControl ,steepDegreeControl2,StrokeControl,isFillControll,WaveControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl;
 
   window.onload = function() {
     gui = new dat.GUI();
 
   //folder1
   var folder1 = gui.addFolder('Controls');
-  var folder2 = gui.addFolder('Text');
-  var folder3 = gui.addFolder('Image');
-  var folder4 = gui.addFolder('Save');
 
   bgcolorControl = folder1.addColor(options, 'Background');
   bgcolorControl.onChange(draw);
@@ -177,32 +171,24 @@ var GuiConfig = function() {
   FillControl = folder1.addColor(options, 'Fill');
   FillControl.onChange(draw);
 
-  StrokeModeControl = folder1.add(options, 'StrokeMode', ['SolidColor','Gradient'] );
-  StrokeModeControl.listen();
-  StrokeModeControl.onChange(function(){
-    if(options.StrokeMode== 'SolidColor'){
-      type = 'SolidColor';  
-      draw();
-    }
-    else if(options.StrokeMode== 'Gradient'){
-      type = 'Gradient';  
-      draw();
-    }
-  });
 
-  Stroke1Control = folder1.addColor(options, 'Stroke1');
-  Stroke1Control.onChange(draw);
+  StrokeControl = folder1.addColor(options, 'Stroke');
+  StrokeControl.onChange(draw);
 
-  Stroke2Control = folder1.addColor(options, 'Stroke2');
-  Stroke2Control.onChange(draw);
 
-  StrokeWeightControl = folder1.add(options, 'StrokeWeight',0.1,3);
-  StrokeWeightControl.onChange(draw);
-  StrokeWeightControl.listen();
+  // var UploadImg = folder1.add(options, 'Upload Image');
+
+  StrokeControl = folder1.add(options, 'textWeight',0,20);
+  StrokeControl.onChange(draw);
+  StrokeControl.listen();
 
   steepDegreeControl = folder1.add(options, 'steepDegree',0,10);
   steepDegreeControl.onChange(draw);
   steepDegreeControl.listen();
+
+  textSizeScaleControl = folder1.add(options, 'textSize',100,400);
+  textSizeScaleControl.onChange(draw);
+  textSizeScaleControl.listen();
 
   WaveXControl = folder1.add(options, 'WaveX',1,30);
   WaveXControl.onChange(draw);
@@ -212,63 +198,30 @@ var GuiConfig = function() {
   WaveYControl.onChange(draw);
   WaveYControl.listen();
 
-  SmoothControl = folder1.add(options, 'Smooth');
-  SmoothControl.onChange(draw);
+  WaveControl = folder1.add(options, 'Wave');
+  WaveControl .onChange(draw);
 
   AnimationControl = folder1.add(options, 'Animation');
-  AnimationControl.onChange(draw);
+  AnimationControl .onChange(draw);
+
 
   RandomControl = folder1.add(options, 'Random');
   RandomControl.listen();
 
 
-  //fold2 Text
-  textSizeScaleControl = folder2.add(options, 'textSize',100,400);
-  textSizeScaleControl.onChange(draw);
-  textSizeScaleControl.listen();
+  pngControl = folder1.add(options, 'SavePNG');
+  pngControl.onChange(draw);
 
-  StrokeControl = folder2.add(options, 'textWeight',0,20);
-  StrokeControl.onChange(draw);
-  StrokeControl.listen();
-
-
-  var textControl = folder2.add(options, 'Text'); 
+  var textControl = folder1.add(options, 'Text'); 
   textControl.onChange(function(){
     type='text';
     draw();
   });
 
-
-  //fold3 Image
-  var UploadImg = folder3.add(options, 'Upload Image');
-
-  BrightnessControl = folder3.add(options, 'Brightness',10,100);
-  BrightnessControl.onChange(draw);
-  BrightnessControl.listen();
-
-  // TransparentControl = folder4.add(options, 'Transparent');
-  // TransparentControl.onChange(draw);
-
-  // SVGControl = folder4.add(options, 'SVG');
-  // SVGControl.onChange(setup);
-  // SVGControl.onChange(draw);
-
-  var SaveControl = folder4.add(options, 'Save');
-  // SaveControl.onChange(function(){
-  //   type='Save';
-  //   setup();
-  // });
-  // var SaveSVGControl = folder4.add(options, 'SaveSVG');
-  //   SaveSVGControl.onChange(function(){
-  //   type='SVG';
-  //   setup();
-  // });
-  // SaveSVGControl.onChange(setup);
-
+  var SaveControl = folder1.add(options, 'Save');
   folder1.open();
-  folder2.open();
-  folder3.open();
-  folder4.open();
+
+
 };
 
 function componentToHex(c) {
@@ -282,6 +235,7 @@ function rgbToHex(r, g, b) {
 
 
 </script>
+
 <script type="text/javascript" src="js/sketch.js"></script>
 </body>
 
