@@ -58,7 +58,6 @@ function drawLine(){
   pg.loadPixels();
   strokeWeight(options.StrokeWeight);
 
-
   for(var y = 0; y < pg.height; y+=int(options.WaveY)){
     if(options.StrokeMode == 'SolidColor'){
       stroke(options.Stroke1);
@@ -68,8 +67,9 @@ function drawLine(){
       stroke(between);
     }
 
+
     beginShape();
-    for(var x = 0 ; x < pg.width; x+=int(options.WaveX)){
+    for(var x = -20 ; x < pg.width; x+=int(options.WaveX)){
       loc = (x + y *pg.width)*4;
       var angle = noise(y/1000, x/10000, x)*TWO_PI*options.steepDegree;
 
@@ -99,14 +99,8 @@ function drawLine(){
             vertex(x, y+sin(angle)*10-20);
           }
         }
-      }else if(value<options.Brightness){
-        vertex(x, y);
       }else{
-        if(options.Wave == true){
-          vertex(x, y);
-        }else{
-          vertex(x, y);
-        }
+        vertex(x, y); 
       }
     }
     endShape();
@@ -114,9 +108,7 @@ function drawLine(){
 
     if(options.isFill == true){
       fill(options.Background);
-      stroke(options.Stroke1);
-      strokeWeight(options.StrokeWeight);
-      rect(-10,y,width+10,int(options.WaveY));
+      rect(0,y,width,options.WaveY);
     }else{
       noFill();
     }
