@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>waveFont</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <link href="" rel="stylesheet">
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta http-equiv="x-ua-compatible" content="IE=edge" />
-  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-touch-fullscreen" content="no">
 
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
-  <!-- <link rel="shortcut icon" href="image/1.ico" type="image/x-icon"> -->
-
+  <link rel="shortcut icon" href="image/1.ico" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="fonts.css">
-
   <script type="text/javascript" src="js/dat.gui.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
+  <script type='text/javascript' src="js/p5.min.js"></script>
+  <script type='text/javascript' src="js/p5.dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.sound.min.js"></script>
+  <script type='text/javascript' src='js/p5.dom.js'></script>
   <script src="js/p5.svg.js"></script>
 
   <input id="img-path" type="file" />
-
   <style type="text/css">
   *{
     margin:0;
@@ -63,6 +60,15 @@
     display: none;
   }
 
+  .myContainer{
+    width:100%;
+    height:100%;
+  }
+
+  .graphic{
+    margin: 0;0;
+    padding: 0;
+  }
 </style>
 
 <script>
@@ -91,14 +97,14 @@
 </div>
 <div class = "logo" style="margin-left:10px; margin-bottom: -40px; "><a href = "https://wangyasai.github.io/designtools.html"><img src="logo.png" style ="width: 40px"></a></div>
 
-
+<div id='myContainer'></div>
 
 <script type="text/javascript">
   var type;
   var options ={  
     Background :'#000000',
     isFill : false,
-    Fill : '#36f7b3',
+    Fill : '#ff3d98',
     StrokeMode : 'SolidColor',
     Stroke1 : '#FFFFFF',
     Stroke2 : '#FFFFFF',
@@ -109,7 +115,7 @@
     Brightness : 50,
     textWeight : 5,
     Image_DataURL :'',
-    textSize: 200,
+    textSize: 60,
     Text : "WAVE FONT",
     'Upload Image': function(){
         // you need to create an input element in HTML, explained later
@@ -134,26 +140,26 @@
 
       Smooth : true,
       Animation : true,
+      Speed: 60,
 
       Random: function () { 
         background(options.Background); 
-        options.Background  = random(['#FFE300', '#00EBA5','#111111','#f2f2f2']);
-        options.Fill = random(['#E632A5', '#580AFF','#005CFF']);
-        options.Stroke = random(['#FFFFFF','#000000' ]);
+        options.Background  = random(['#FFE300', '#00EBA5','#111111','#f2f2f2','#e86a5a']);
+        options.Fill = random(['#E632A5', '#580AFF','#005CFF','#bc80bb']);
+        options.Stroke1 = random(['#FFFFFF','#000000' ,'#2c50c8' ,'#4d684c']);
         options.steepDegree = random(0.00001,1); 
         options.textWeight = random(0,20);
+        options.WaveY = random(1,20);
+        options.Speed = random(20,99);
+        // options.Smooth = random(['false','ture' ]);
       },
 
-      // Transparent: false,
-      // SVG: false,
 
       Save: function(){
         saveFrames("waveFont", "png", 1, 1);
       },
 
-      // SaveSVG: function(){
-      //   save("waveFont.svg");
-      // }
+      Svg: false,
     }
 
 
@@ -165,7 +171,7 @@ var GuiConfig = function() {
   };
 
 
-  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl, pngControl,SaveControl ,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl;
+  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl, SvgControl,SaveControl,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl,SpeedControl;
 
   window.onload = function() {
     gui = new dat.GUI();
@@ -180,7 +186,7 @@ var GuiConfig = function() {
   bgcolorControl.onChange(draw);
 
   isFillControl = folder1.add(options, 'isFill');
-  isFillControl .onChange(draw);
+  isFillControl.onChange(draw);
 
   FillControl = folder1.addColor(options, 'Fill');
   FillControl.onChange(draw);
@@ -208,10 +214,6 @@ var GuiConfig = function() {
   StrokeWeightControl.onChange(draw);
   StrokeWeightControl.listen();
 
-  steepDegreeControl = folder1.add(options, 'steepDegree',0,10);
-  steepDegreeControl.onChange(draw);
-  steepDegreeControl.listen();
-
   WaveXControl = folder1.add(options, 'WaveX',1,30);
   WaveXControl.onChange(draw);
   WaveXControl.listen();
@@ -220,18 +222,29 @@ var GuiConfig = function() {
   WaveYControl.onChange(draw);
   WaveYControl.listen();
 
-  SmoothControl = folder1.add(options, 'Smooth');
-  SmoothControl.onChange(draw);
 
   AnimationControl = folder1.add(options, 'Animation');
   AnimationControl.onChange(draw);
 
+  SpeedControl= folder1.add(options, 'Speed',10,99);
+  SpeedControl.onChange(draw);
+  SpeedControl.listen();
+
+  
+  SmoothControl = folder1.add(options, 'Smooth');
+  SmoothControl.onChange(draw);
+  SmoothControl.listen();
+
+  steepDegreeControl = folder1.add(options, 'steepDegree',0,20);
+  steepDegreeControl.onChange(draw);
+  steepDegreeControl.listen();
+
+
   RandomControl = folder1.add(options, 'Random');
   RandomControl.listen();
 
-
   //fold2 Text
-  textSizeScaleControl = folder2.add(options, 'textSize',100,400);
+  textSizeScaleControl = folder2.add(options, 'textSize',20,200);
   textSizeScaleControl.onChange(draw);
   textSizeScaleControl.listen();
 
@@ -243,7 +256,6 @@ var GuiConfig = function() {
   var textControl = folder2.add(options, 'Text'); 
   textControl.onChange(function(){
     type='text';
-    setup();
     draw();
   });
 
@@ -251,11 +263,13 @@ var GuiConfig = function() {
   //fold3 Image
   var UploadImg = folder3.add(options, 'Upload Image');
 
-  BrightnessControl = folder3.add(options, 'Brightness',10,100);
+  BrightnessControl = folder3.add(options, 'Brightness',10,99);
   BrightnessControl.onChange(draw);
-  BrightnessControl.listen();
 
   var SaveControl = folder4.add(options, 'Save');
+
+  // SvgControl = folder4.add(options, 'Svg');
+  // SvgControl.onChange(draw);
 
   folder1.open();
   folder2.open();
@@ -271,12 +285,10 @@ function componentToHex(c) {
 function rgbToHex(r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
-
-
 </script>
 
-<script type="text/javascript" src="js/sketch.js">
-</script>
+
+<script type="text/javascript" src="js/sketch.js"></script>
 
 
 </body>
