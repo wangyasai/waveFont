@@ -9,7 +9,15 @@ let myCanvas;
 function setup(){
   w = windowWidth;
   h = windowHeight;
-  myCanvas = createCanvas(w,h);
+
+  if(options.ImageMode != 'SVG'){
+    myCanvas = createCanvas(w,h);
+    print("not svg");
+  }else if(options.ImageMode == 'SVG'){
+    myCanvas = createCanvas(w, h, SVG);
+    print("svg");
+  }
+  
   pg = createGraphics(w,h);
   myCanvas.class("myCanvas");
   pg.class("graphic");
@@ -31,14 +39,21 @@ function hexToRgb(hex) {
 }
 
 
-
 function draw(){
   pixelDensity(1);
-  background(options.Background);
+  if(options.ImageMode == 'JPG'){
+    options.isFill == false;
+    background(options.Background);
+  }else if(options.ImageMode == 'PNG'){
+    clear();
+  }else if(options.ImageMode == 'SVG'){
+    background(0,0,0,0);
+  }
+
   pg.background(0);
   pg.fill(255);
   pg.stroke(255);
-  var n = map(w,300,2000,-20,140);
+  var n = map(w,300,2000,0,170);
   pg.textSize(int(options.textSize+n));
   pg.strokeWeight(options.textWeight); 
 
@@ -57,18 +72,12 @@ function draw(){
   push();
   drawLine(); 
   pop();
-  // if(options.Svg == true){
-  //     save("mySVG.svg");      // give file name
-  //     print ("saved svg");
-  //     noLoop(); 
-  //   }
-}
 
+}
 
 function drawLine(){
   pg.loadPixels();
   pg.pixelDensity(pixelDensity());
-  strokeWeight(options.StrokeWeight);
 
   for(var y = 0; y < pg.height; y+=int(options.WaveY)){
     if(options.StrokeMode == 'SolidColor'){
@@ -80,6 +89,13 @@ function drawLine(){
     }
 
     beginShape();
+    if(options.isFill == true){
+      strokeWeight(options.StrokeWeight*0.6);
+      fill(options.Fill);
+    }else{
+      strokeWeight(options.StrokeWeight);
+      noFill();
+    }
     for(var x = -20 ; x < pg.width+50; x+=int(options.WaveX)){
       loc = (x + y *pg.width)*4;
       var angle = noise(y/1000, x/10000, x)*TWO_PI*options.steepDegree;
@@ -89,16 +105,6 @@ function drawLine(){
       blue = pg.pixels[loc+2];
       c = color(red, green, blue);
       value = brightness(c);
-
-
-
-      if(options.isFill == true){
-        fill(options.Fill);
-        strokeWeight(options.strokeWeight/2);
-      }else{
-        noFill();
-      }
-
 
       if(value > options.Brightness){
         if(options.Smooth == true){       
@@ -121,11 +127,14 @@ function drawLine(){
     endShape();
 
     if(options.isFill == true){
+      strokeWeight(options.StrokeWeight*0.9);
       fill(options.Background);
       rect(-20,y,width+60,options.WaveY);
     }else{
+      strokeWeight(options.StrokeWeight);
       noFill();
     }
+
   }
   pg.updatePixels();
 }
