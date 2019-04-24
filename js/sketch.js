@@ -10,10 +10,10 @@ function setup(){
   w = windowWidth;
   h = windowHeight;
 
-  if(options.ImageMode != 'SVG'){
+  if(options.Type != 'SVG'){
     myCanvas = createCanvas(w,h);
     print("not svg");
-  }else if(options.ImageMode == 'SVG'){
+  }else if(options.Type == 'SVG'){
     myCanvas = createCanvas(w, h, SVG);
     print("svg");
   }
@@ -41,12 +41,12 @@ function hexToRgb(hex) {
 
 function draw(){
   pixelDensity(1);
-  if(options.ImageMode == 'JPG'){
+  if(options.Type == 'JPG'){
     options.isFill == false;
     background(options.Background);
-  }else if(options.ImageMode == 'PNG'){
-    clear();
-  }else if(options.ImageMode == 'SVG'){
+  }else if(options.Type == 'PNG'){
+    background(0,0,0,0);
+  }else if(options.Type == 'SVG'){
     background(0,0,0,0);
   }
 
@@ -60,7 +60,7 @@ function draw(){
 
   if(type == "image"){
     push();
-    pg.imageMode(CENTER);
+    pg.Type(CENTER);
     pg.image(img,w/2, h/2);
     pop();
   }else if(type ="text") {

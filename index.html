@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-touch-fullscreen" content="no">
-
+  <title>waveFont</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -154,7 +154,7 @@
         // options.Smooth = random(['false','ture' ]);
       },
 
-      ImageMode: 'JPG',
+      Type: 'JPG',
       Save: function(){
 
       },
@@ -170,7 +170,7 @@ var GuiConfig = function() {
   };
 
 
-  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl,PngControl,SvgControl,SaveControl,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl,SpeedControl,ImageModeControl;
+  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl,PngControl,SvgControl,SaveControl,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl,SpeedControl,TypeControl;
 
   window.onload = function() {
     gui = new dat.GUI();
@@ -186,7 +186,7 @@ var GuiConfig = function() {
 
   isFillControl = folder1.add(options, 'isFill');
   isFillControl.onChange(function(){
-    options.ImageMode = 'JPG';
+    options.Type = 'JPG';
     draw();
   });
   isFillControl.listen();
@@ -270,32 +270,32 @@ var GuiConfig = function() {
 
 
   //fold4 save
-  ImageModeControl =  folder4.add(options, 'ImageMode',['JPG','PNG', 'SVG']);
-  ImageModeControl.onChange(function(){
-    if(options.ImageMode == 'SVG'){
+  TypeControl =  folder4.add(options, 'Type',['JPG','PNG', 'SVG']);
+  TypeControl.onChange(function(){
+    if(options.Type == 'SVG'){
       options.isFill = false;
       setup();
       draw();
-    }else if(options.ImageMode == 'PNG'){   
+    }else if(options.Type == 'PNG'){   
       options.isFill = false;  
       setup();  
       draw();
-    }else if(options.ImageMode == 'JPG'){   
+    }else if(options.Type == 'JPG'){   
       setup();  
       draw();
     }
   });
-  ImageModeControl.listen();
+  TypeControl.listen();
   
 
   var SaveControl = folder4.add(options, 'Save');
   SaveControl.onChange(function(){
-    if(options.ImageMode =='JPG'){
-      saveFrames("font.jpg","jpg",1,1);
-    }else if(options.ImageMode == 'PNG'){   
-      saveFrames("font.png","jpg",1,1);
-    }else if(options.ImageMode == 'SVG'){   
-      save("mySVG.svg");
+    if(options.Type =='JPG'){
+      saveFrames("waveFont.jpg","jpg",1,1);
+    }else if(options.Type == 'PNG'){   
+      saveFrames("waveFont.png","png",1,1);
+    }else if(options.Type == 'SVG'){   
+      save("waveFont.svg");
     }
   });
   SaveControl.listen();
