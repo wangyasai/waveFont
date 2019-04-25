@@ -60,7 +60,7 @@ function draw(){
 
   if(type == "image"){
     push();
-    pg.ImageMode(CENTER);
+    pg.imageMode(CENTER);
     pg.image(img,w/2, h/2);
     pop();
   }else if(type ="text") {
