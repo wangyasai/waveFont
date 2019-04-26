@@ -102,7 +102,9 @@
 <script type="text/javascript">
   var type;
   var options ={  
-    Background :'#040014',
+    BackgroundMode : 'SolidColor',
+    Background1 :'#040014',
+    Background2 :'#0f3272',
     isFill : false,
     Fill : '#241bb6',
     StrokeMode : 'SolidColor',
@@ -112,6 +114,7 @@
     steepDegree :0.001,
     WaveX: 10,
     WaveY: 10,
+    Noise: false,
     Brightness : 50,
     textWeight : 10,
     Image_DataURL :'',
@@ -170,7 +173,7 @@ var GuiConfig = function() {
   };
 
 
-  var text, gui, config,bgcolorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl,PngControl,SvgControl,SaveControl,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl,SpeedControl,TypeControl;
+  var text, gui, config,bgcolorControl,bg2colorControl,steepDegreeControl,RadiusControl,StrokeWeightControl,imageControl,Stroke1Control,Stroke2Control, StrokeModeControl,PngControl,SvgControl,SaveControl,steepDegreeControl2,StrokeControl,isFillControll,SmoothControl,WaveXControl,WaveYControl,AnimationControl,SaveControl,textSizeControl, svgControl,BrightnessControl,TransparentControl,SpeedControl,TypeControl,BGModeControl,noiseControl ;
 
   window.onload = function() {
     gui = new dat.GUI();
@@ -181,8 +184,16 @@ var GuiConfig = function() {
   var folder3 = gui.addFolder('Image');
   var folder4 = gui.addFolder('Save');
 
-  bgcolorControl = folder1.addColor(options, 'Background');
+
+  BGModeControl = folder1.add(options, 'BackgroundMode', ['SolidColor','Gradient'] );
+  BGModeControl.listen();
+
+  bgcolorControl = folder1.addColor(options, 'Background1');
   bgcolorControl.onChange(draw);
+
+  bg2colorControl = folder1.addColor(options, 'Background2');
+  bg2colorControl.onChange(draw);
+
 
   isFillControl = folder1.add(options, 'isFill');
   isFillControl.onChange(function(){
@@ -242,6 +253,10 @@ var GuiConfig = function() {
   steepDegreeControl.onChange(draw);
   steepDegreeControl.listen();
 
+  noiseControl = folder1.add(options, 'Noise');
+  noiseControl.onChange(draw);
+  // steepDegreeControl.listen();
+
   RandomControl = folder1.add(options, 'Random');
   RandomControl.listen();
 
@@ -283,6 +298,7 @@ var GuiConfig = function() {
     }else if(options.Type == 'JPG'){   
       setup();  
       draw();
+      print('jpg');
     }
   });
   TypeControl.listen();

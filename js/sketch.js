@@ -4,6 +4,7 @@ var red,green,blue,c,value;
 var w, h;
 var loc;
 let myCanvas;
+var num;
 
 
 function setup(){
@@ -12,10 +13,10 @@ function setup(){
 
   if(options.Type != 'SVG'){
     myCanvas = createCanvas(w,h);
-    print("not svg");
+    // print("not svg");
   }else if(options.Type == 'SVG'){
     myCanvas = createCanvas(w, h, SVG);
-    print("svg");
+    // print("svg");
   }
   
   pg = createGraphics(w,h);
@@ -42,36 +43,57 @@ function hexToRgb(hex) {
 function draw(){
   pixelDensity(1);
   if(options.Type == 'JPG'){
-    options.isFill == false;
-    background(options.Background);
-  }else if(options.Type == 'PNG'){
-    background(0,0,0,0);
-  }else if(options.Type == 'SVG'){
-    background(0,0,0,0);
+   noStroke();
+   for(var y = 0; y < h; y+=10){
+     if(options.BackgroundMode == "SolidColor"){
+      fill(options.Background1);
+    }else{
+      var percent2 = norm(y, 0, pg.height);
+      var between2 = lerpColor(color(options.Background1), color(options.Background2), percent2);
+      fill(between2);
+    }
+    rect(-20,y,width+60,options.WaveY);
   }
+}else if(options.Type == 'PNG'){
+  background(0,0,0,0);
+}else if(options.Type == 'SVG'){
+  background(0,0,0,0);
+}
 
-  pg.background(0);
-  pg.fill(255);
-  pg.stroke(255);
-  var n = map(w,300,2000,0,170);
-  pg.textSize(int(options.textSize+n));
-  pg.strokeWeight(options.textWeight); 
+pg.background(0);
+pg.fill(255);
+pg.stroke(255);
+var n = map(w,300,2000,0,170);
+pg.textSize(int(options.textSize+n));
+pg.strokeWeight(options.textWeight); 
 
 
-  if(type == "image"){
-    push();
-    pg.Type(CENTER);
-    pg.image(img,w/2, h/2);
-    pop();
-  }else if(type ="text") {
-    pg.textAlign(CENTER);
-    pg.text(options.Text,w/2,h/2);
-    rectMode(CORNER);
-  }
-  smooth();
+if(type == "image"){
   push();
-  drawLine(); 
+  pg.imageMode(CENTER);
+  pg.image(img,w/2, h/2);
   pop();
+}else if(type ="text") {
+  pg.textAlign(CENTER);
+  pg.text(options.Text,w/2,h/2);
+  rectMode(CORNER);
+}
+smooth();
+push();
+drawLine(); 
+pop();
+
+
+if(options.Noise == true){
+  for(var i = 0; i <w; i++){
+    for(var j = 0 ; j<h;j++){
+      if(random(1)<0.8){
+        stroke(255);
+        vertex(i,j);
+      }
+    }
+  }
+}
 
 }
 
@@ -127,14 +149,19 @@ function drawLine(){
     endShape();
 
     if(options.isFill == true){
-      strokeWeight(options.StrokeWeight*0.9);
-      fill(options.Background);
+      strokeWeight(options.StrokeWeight*0.9);     
+      if(options.BackgroundMode == "SolidColor"){
+        fill(options.Background1);
+      }else{
+        var percent1 = norm(y, 0, pg.height);
+        var between1 = lerpColor(color(options.Background1), color(options.Background2), percent1);
+        fill(between1);
+      }
       rect(-20,y,width+60,options.WaveY);
     }else{
       strokeWeight(options.StrokeWeight);
       noFill();
     }
-
   }
   pg.updatePixels();
 }
