@@ -13,10 +13,10 @@ function setup(){
 
   if(options.Type != 'SVG'){
     myCanvas = createCanvas(w,h);
-    // print("not svg");
+    print("not svg");
   }else if(options.Type == 'SVG'){
     myCanvas = createCanvas(w, h, SVG);
-    // print("svg");
+    print("svg");
   }
   
   pg = createGraphics(w,h);
@@ -84,16 +84,16 @@ drawLine();
 pop();
 
 
-if(options.Noise == true){
-  for(var i = 0; i <w; i++){
-    for(var j = 0 ; j<h;j++){
-      if(random(1)<0.8){
-        stroke(255);
-        vertex(i,j);
-      }
-    }
-  }
-}
+// if(options.Noise == true){
+//   for(var i = 0; i <w; i++){
+//     for(var j = 0 ; j<h;j++){
+//       if(random(1)<0.8){
+//         stroke(255);
+//         vertex(i,j);
+//       }
+//     }
+//   }
+// }
 
 }
 

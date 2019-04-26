@@ -114,7 +114,7 @@
     steepDegree :0.001,
     WaveX: 10,
     WaveY: 10,
-    Noise: false,
+    // Noise: false,
     Brightness : 50,
     textWeight : 10,
     Image_DataURL :'',
@@ -253,8 +253,8 @@ var GuiConfig = function() {
   steepDegreeControl.onChange(draw);
   steepDegreeControl.listen();
 
-  noiseControl = folder1.add(options, 'Noise');
-  noiseControl.onChange(draw);
+  // noiseControl = folder1.add(options, 'Noise');
+  // noiseControl.onChange(draw);
   // steepDegreeControl.listen();
 
   RandomControl = folder1.add(options, 'Random');
