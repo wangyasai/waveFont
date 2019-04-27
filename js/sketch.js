@@ -1,4 +1,4 @@
-let pg,img;
+let pg,img,pgnoise;
 var noiseScale = 1000;
 var red,green,blue,c,value;
 var w, h;
@@ -6,22 +6,27 @@ var loc;
 let myCanvas;
 var num;
 
-
 function setup(){
   w = windowWidth;
   h = windowHeight;
 
-  if(options.Type != 'SVG'){
+  if(options.Type == 'PNG' || options.Type == 'JPG'){
     myCanvas = createCanvas(w,h);
-    print("not svg");
   }else if(options.Type == 'SVG'){
     myCanvas = createCanvas(w, h, SVG);
-    print("svg");
   }
   
   pg = createGraphics(w,h);
+
   myCanvas.class("myCanvas");
   pg.class("graphic");
+
+  pgnoise = createGraphics(w,h);
+  pixelDensity(1);
+  for(var i = 0; i < 400000; i++){
+    pgnoise.stroke(options.NoiseColor[0],options.NoiseColor[1],options.NoiseColor[2],random(options.NoiseAlpha));
+    pgnoise.point(random(w),random(h));
+  }
 }
 
 
@@ -45,8 +50,10 @@ function draw(){
   if(options.Type == 'JPG'){
    noStroke();
    for(var y = 0; y < h; y+=10){
-     if(options.BackgroundMode == "SolidColor"){
+
+    if(options.BackgroundMode == "SolidColor"){
       fill(options.Background1);
+      noStroke();
     }else{
       var percent2 = norm(y, 0, pg.height);
       var between2 = lerpColor(color(options.Background1), color(options.Background2), percent2);
@@ -83,19 +90,12 @@ push();
 drawLine(); 
 pop();
 
-
-// if(options.Noise == true){
-//   for(var i = 0; i <w; i++){
-//     for(var j = 0 ; j<h;j++){
-//       if(random(1)<0.8){
-//         stroke(255);
-//         vertex(i,j);
-//       }
-//     }
-//   }
-// }
-
+if(options.Noise == true){
+  image(pgnoise,0,0);  
 }
+}
+
+
 
 function drawLine(){
   pg.loadPixels();
@@ -149,7 +149,15 @@ function drawLine(){
     endShape();
 
     if(options.isFill == true){
-      strokeWeight(options.StrokeWeight*0.9);     
+      strokeWeight(options.StrokeWeight*0.9);
+      if(options.StrokeMode == 'SolidColor'){
+        stroke(options.Stroke1);
+      }else{
+        var percent = norm(y, 0, pg.height);
+        var between = lerpColor(color(options.Stroke1), color(options.Stroke2), percent);
+        stroke(between);
+      } 
+
       if(options.BackgroundMode == "SolidColor"){
         fill(options.Background1);
       }else{
