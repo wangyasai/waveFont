@@ -23,7 +23,7 @@ function setup(){
 
   pgnoise = createGraphics(w,h);
   pixelDensity(1);
-  for(var i = 0; i < 400000; i++){
+  for(var i = 0; i < 60000; i++){
     pgnoise.stroke(options.NoiseColor[0],options.NoiseColor[1],options.NoiseColor[2],random(options.NoiseAlpha));
     pgnoise.point(random(w),random(h));
   }
