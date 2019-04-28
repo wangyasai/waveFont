@@ -274,11 +274,11 @@ var GuiConfig = function() {
   WaveYControl = folder2.add(options, 'WaveY',5,30);
   WaveYControl.onChange(draw);
 
-  SmoothControl = folder2.add(options, 'Smooth');
-  SmoothControl.onChange(draw);
-
   SpeedControl= folder2.add(options, 'Speed',0,10);
   SpeedControl.onChange(draw);
+    
+  SmoothControl = folder2.add(options, 'Smooth');
+  SmoothControl.onChange(draw);
 
   noiseControl = folder2.add(options, 'Noise');
   noiseControl.onChange(setup);
