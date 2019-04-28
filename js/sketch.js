@@ -64,7 +64,7 @@ function draw(){
   background(0,0,0,0);
 }else if(options.Type == 'SVG'){
   background(0,0,0,0);
-  
+
 }
 
 pg.background(0);
@@ -123,7 +123,7 @@ function drawLine(){
       value = brightness(c);
 
 
-      strokeWeight(options.StrokeWeight*0.6);
+      strokeWeight(options.StrokeWeight);
       if(options.FillMode == 'SolidColor'){
         fill(options.Fill1);
       }else if(options.FillMode == 'Gradient'){
@@ -149,7 +149,7 @@ function drawLine(){
 
 
     if(options.FillMode != 'None'){
-      strokeWeight(options.StrokeWeight*0.9);
+      strokeWeight(options.StrokeWeight);
       if(options.StrokeMode == 'SolidColor'){
         stroke(options.Stroke1);
       }else{
