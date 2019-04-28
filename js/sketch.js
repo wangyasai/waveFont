@@ -49,14 +49,13 @@ function draw(){
   pixelDensity(1);
   if(options.Type == 'JPG'){
    noStroke();
-   for(var y = 0; y < h; y+=10){
-
-    if(options.BackgroundMode == "SolidColor"){
-      fill(options.Background1);
+   for(var y = 0; y < h; y+=options.WaveY){
+    if(options.BgColorMode == "SolidColor"){
+      fill(options.BgColor1);
       noStroke();
     }else{
       var percent2 = norm(y, 0, pg.height);
-      var between2 = lerpColor(color(options.Background1), color(options.Background2), percent2);
+      var between2 = lerpColor(color(options.BgColor1), color(options.BgColor2), percent2);
       fill(between2);
     }
     rect(-20,y,width+60,options.WaveY);
@@ -110,17 +109,11 @@ function drawLine(){
       stroke(between);
     }
 
+
     beginShape();
-    if(options.isFill == true){
-      strokeWeight(options.StrokeWeight*0.6);
-      fill(options.Fill);
-    }else{
-      strokeWeight(options.StrokeWeight);
-      noFill();
-    }
     for(var x = -20 ; x < pg.width+50; x+=int(options.WaveX)){
       loc = (x + y *pg.width)*4;
-      var angle = noise(y/1000, x/10000, x)*TWO_PI*options.steepDegree;
+      var angle = noise(y/1000, x/10000, x)*TWO_PI*0.001;
 
       red =  pg.pixels[loc];
       green =  pg.pixels[loc+1];
@@ -128,19 +121,24 @@ function drawLine(){
       c = color(red, green, blue);
       value = brightness(c);
 
+
+      strokeWeight(options.StrokeWeight*0.6);
+      if(options.FillMode == 'SolidColor'){
+        fill(options.Fill1);
+      }else if(options.FillMode == 'Gradient'){
+        var percent2 = norm(y, pg.height*0.3, pg.height*0.7);
+        var between2 = lerpColor(color(options.Fill1), color(options.Fill2), percent2);
+        fill(between2);
+      }else{
+        noFill();
+      }
+
       if(value > options.Brightness){
+        var speed = map(options.Speed,0,10,200,1)
         if(options.Smooth == true){       
-          if(options.Animation == true){
-            curveVertex(x, y+sin((frameCount/(100-int(options.Speed))+x/20+y/50))*10-20);
-          }else{
-            curveVertex(x, y+sin(angle)*10-20);
-          }
+          curveVertex(x, y+sin((frameCount/(speed)+x/20+y/50))*10-20);
         }else if(options.Smooth == false){
-          if(options.Animation == true){
-            vertex(x, y+sin((frameCount/(100-int(options.Speed))+x/20+y/50))*10-20);
-          }else{
-            vertex(x, y+sin(angle)*10-20);
-          }
+          vertex(x, y+sin((frameCount/(speed)+x/20+y/50))*10-20);
         }
       }else{
         vertex(x, y); 
@@ -148,7 +146,8 @@ function drawLine(){
     }
     endShape();
 
-    if(options.isFill == true){
+
+    if(options.FillMode != 'None'){
       strokeWeight(options.StrokeWeight*0.9);
       if(options.StrokeMode == 'SolidColor'){
         stroke(options.Stroke1);
@@ -157,12 +156,11 @@ function drawLine(){
         var between = lerpColor(color(options.Stroke1), color(options.Stroke2), percent);
         stroke(between);
       } 
-
-      if(options.BackgroundMode == "SolidColor"){
-        fill(options.Background1);
+      if(options.BgColorMode == "SolidColor"){
+        fill(options.BgColor1);
       }else{
         var percent1 = norm(y, 0, pg.height);
-        var between1 = lerpColor(color(options.Background1), color(options.Background2), percent1);
+        var between1 = lerpColor(color(options.BgColor1), color(options.BgColor2), percent1);
         fill(between1);
       }
       rect(-20,y,width+60,options.WaveY);
