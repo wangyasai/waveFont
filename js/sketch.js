@@ -49,7 +49,7 @@ function draw(){
   pixelDensity(1);
   if(options.Type == 'JPG'){
    noStroke();
-   for(var y = 0; y < h; y+=options.WaveY){
+   for(var y = 0; y < h; y+=int(options.WaveY)){
     if(options.BgColorMode == "SolidColor"){
       fill(options.BgColor1);
       noStroke();
@@ -58,12 +58,13 @@ function draw(){
       var between2 = lerpColor(color(options.BgColor1), color(options.BgColor2), percent2);
       fill(between2);
     }
-    rect(-20,y,width+60,options.WaveY);
+    rect(-20,y,width+60,int(options.WaveY));
   }
 }else if(options.Type == 'PNG'){
   background(0,0,0,0);
 }else if(options.Type == 'SVG'){
   background(0,0,0,0);
+  
 }
 
 pg.background(0);
