@@ -147,7 +147,6 @@ function drawLine(){
     }
     endShape();
 
-
     if(options.FillMode != 'None'){
       strokeWeight(options.StrokeWeight);
       if(options.StrokeMode == 'SolidColor'){
@@ -164,7 +163,7 @@ function drawLine(){
         var between1 = lerpColor(color(options.BgColor1), color(options.BgColor2), percent1);
         fill(between1);
       }
-      rect(-20,y,width+60,options.WaveY);
+      rect(-20,y,width+60,int(options.WaveY));
     }else{
       strokeWeight(options.StrokeWeight);
       noFill();
