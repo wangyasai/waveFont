@@ -6,6 +6,8 @@ var loc;
 let myCanvas;
 var num;
 var n ;
+var posX;
+var randomX = [];
 
 function setup(){
   w = windowWidth;
@@ -27,7 +29,6 @@ function setup(){
   for(var i = 0; i < 60000; i++){
     pgnoise.stroke(options.NoiseColor[0],options.NoiseColor[1],options.NoiseColor[2],random(options.NoiseAlpha));
     pgnoise.point(random(w),random(h));
-    // print('noise');
   }
 
   n = 5;
@@ -37,7 +38,10 @@ function setup(){
     var alpha= map(i, n/2*int(options.WaveY), n*int(options.WaveY),0,280);
     pgGradient.stroke(options.BgColor[0], options.BgColor[1], options.BgColor[2],alpha);
     pgGradient.line(-10,i,w+10,i);
-    // print('resetup');
+  }
+
+  for(var i = 0 ; i < h/(int(options.WaveY))+2;i++){
+    randomX[i] = random(-options.Offset,options.Offset);
   }
 }
 
@@ -61,7 +65,6 @@ function hexToRgb(hex) {
 function draw(){
   pixelDensity(1);
   if(options.Type == 'JPG'){
-    noStroke();
     for(var y = 0; y < h; y+=int(options.WaveY)){
       fill(options.BgColor);
       noStroke();
@@ -88,7 +91,7 @@ function draw(){
     pg.image(img,w/2, h/2);
     pop();
   }else if(type ="text") {
-    pg.textAlign(CENTER);
+    pg.textAlign(CENTER,CENTER);
     pg.text(options.Text,w/2,h/2);
     rectMode(CORNER);
   }
@@ -119,7 +122,7 @@ function drawLine(){
 
 
     beginShape();
-    for(var x = -20 ; x < pg.width+50; x+=int(options.WaveX)){
+    for(var x = -50 ; x < pg.width+100; x+=int(options.WaveX)){
       loc = (x + y *pg.width)*4;
       var angle = noise(y/1000, x/10000, x)*TWO_PI*0.001;
 
@@ -144,15 +147,20 @@ function drawLine(){
         noFill();
       }
 
+
+     
+        posX = x+randomX[y/int(options.WaveY)];
+   
+
       if(value > options.Brightness){
         var speed = map(options.Speed,0,10,200,1)
-        if(options.Smooth == true){       
-          curveVertex(x, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-options.Height*2);
+        if(options.Smooth == true){
+          curveVertex(posX, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-options.Height*2);
         }else if(options.Smooth == false){
-          vertex(x, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-20);
+          vertex(posX, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-20);
         }
       }else{
-        vertex(x, y); 
+        vertex(posX, y); 
       }
     }
     endShape();
