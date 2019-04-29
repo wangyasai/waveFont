@@ -1,10 +1,11 @@
-let pg,img,pgnoise;
+let pg,img,pgnoise,pgGradient;
 var noiseScale = 1000;
 var red,green,blue,c,value;
 var w, h;
 var loc;
 let myCanvas;
 var num;
+var n ;
 
 function setup(){
   w = windowWidth;
@@ -26,6 +27,17 @@ function setup(){
   for(var i = 0; i < 60000; i++){
     pgnoise.stroke(options.NoiseColor[0],options.NoiseColor[1],options.NoiseColor[2],random(options.NoiseAlpha));
     pgnoise.point(random(w),random(h));
+    // print('noise');
+  }
+
+  n = 5;
+
+  pgGradient = createGraphics(w,n*int(options.WaveY));
+  for(var i = n/2*int(options.WaveY); i< n*int(options.WaveY);i++){
+    var alpha= map(i, n/2*int(options.WaveY), n*int(options.WaveY),0,280);
+    pgGradient.stroke(options.BgColor[0], options.BgColor[1], options.BgColor[2],alpha);
+    pgGradient.line(-10,i,w+10,i);
+    // print('resetup');
   }
 }
 
@@ -33,6 +45,7 @@ function setup(){
 function p5LoadImage(dataURL){
   img = loadImage(dataURL);
 }
+
 
 
 function hexToRgb(hex) {
@@ -48,51 +61,45 @@ function hexToRgb(hex) {
 function draw(){
   pixelDensity(1);
   if(options.Type == 'JPG'){
-   noStroke();
-   for(var y = 0; y < h; y+=10){
-
-    if(options.BackgroundMode == "SolidColor"){
-      fill(options.Background1);
+    noStroke();
+    for(var y = 0; y < h; y+=int(options.WaveY)){
+      fill(options.BgColor);
       noStroke();
-    }else{
-      var percent2 = norm(y, 0, pg.height);
-      var between2 = lerpColor(color(options.Background1), color(options.Background2), percent2);
-      fill(between2);
+      rect(-20,y,width+60,int(options.WaveY));
     }
-    rect(-20,y,width+60,options.WaveY);
+  }else if(options.Type == 'PNG'){
+    background(0,0,0,0);
+  }else if(options.Type == 'SVG'){
+    background(0,0,0,0);
+
   }
-}else if(options.Type == 'PNG'){
-  background(0,0,0,0);
-}else if(options.Type == 'SVG'){
-  background(0,0,0,0);
-}
 
-pg.background(0);
-pg.fill(255);
-pg.stroke(255);
-var n = map(w,300,2000,0,170);
-pg.textSize(int(options.textSize+n));
-pg.strokeWeight(options.textWeight); 
+  pg.background(0);
+  pg.fill(255);
+  pg.stroke(255);
+  var n = map(w,300,2000,0,170);
+  pg.textSize(int(options.textSize+n));
+  pg.strokeWeight(options.textWeight); 
 
 
-if(type == "image"){
+  if(type == "image"){
+    push();
+    pg.imageMode(CENTER);
+    pg.image(img,w/2, h/2);
+    pop();
+  }else if(type ="text") {
+    pg.textAlign(CENTER);
+    pg.text(options.Text,w/2,h/2);
+    rectMode(CORNER);
+  }
+  smooth();
   push();
-  pg.imageMode(CENTER);
-  pg.image(img,w/2, h/2);
+  drawLine(); 
   pop();
-}else if(type ="text") {
-  pg.textAlign(CENTER);
-  pg.text(options.Text,w/2,h/2);
-  rectMode(CORNER);
-}
-smooth();
-push();
-drawLine(); 
-pop();
 
-if(options.Noise == true){
-  image(pgnoise,0,0);  
-}
+  if(options.Noise == true){
+    image(pgnoise,0,0);  
+  }
 }
 
 
@@ -101,7 +108,7 @@ function drawLine(){
   pg.loadPixels();
   pg.pixelDensity(pixelDensity());
 
-  for(var y = 0; y < pg.height; y+=int(options.WaveY)){
+  for(var y = 0; y < pg.height+50; y+=int(options.WaveY)){
     if(options.StrokeMode == 'SolidColor'){
       stroke(options.Stroke1);
     }else if(options.StrokeMode == 'Gradient'){
@@ -110,17 +117,11 @@ function drawLine(){
       stroke(between);
     }
 
+
     beginShape();
-    if(options.isFill == true){
-      strokeWeight(options.StrokeWeight*0.6);
-      fill(options.Fill);
-    }else{
-      strokeWeight(options.StrokeWeight);
-      noFill();
-    }
     for(var x = -20 ; x < pg.width+50; x+=int(options.WaveX)){
       loc = (x + y *pg.width)*4;
-      var angle = noise(y/1000, x/10000, x)*TWO_PI*options.steepDegree;
+      var angle = noise(y/1000, x/10000, x)*TWO_PI*0.001;
 
       red =  pg.pixels[loc];
       green =  pg.pixels[loc+1];
@@ -128,19 +129,27 @@ function drawLine(){
       c = color(red, green, blue);
       value = brightness(c);
 
+
+      strokeWeight(options.StrokeWeight);
+
+      if(options.FillMode == 'SolidColor'){
+        fill(options.Fill1);
+      }else if(options.FillMode == 'Gradient2'){
+        fill(options.Fill1);
+      }else if(options.FillMode == 'Gradient1'){
+        var percent = norm(y, pg.height*0.3, pg.height*0.6);
+        var between = lerpColor(color(options.Fill1), color(options.Fill2), percent);
+        fill(between);
+      }else{
+        noFill();
+      }
+
       if(value > options.Brightness){
+        var speed = map(options.Speed,0,10,200,1)
         if(options.Smooth == true){       
-          if(options.Animation == true){
-            curveVertex(x, y+sin((frameCount/(100-int(options.Speed))+x/20+y/50))*10-20);
-          }else{
-            curveVertex(x, y+sin(angle)*10-20);
-          }
+          curveVertex(x, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-options.Height*2);
         }else if(options.Smooth == false){
-          if(options.Animation == true){
-            vertex(x, y+sin((frameCount/(100-int(options.Speed))+x/20+y/50))*10-20);
-          }else{
-            vertex(x, y+sin(angle)*10-20);
-          }
+          vertex(x, y+sin((frameCount/(speed)+x/20+y/50))*options.Height-20);
         }
       }else{
         vertex(x, y); 
@@ -148,8 +157,9 @@ function drawLine(){
     }
     endShape();
 
-    if(options.isFill == true){
-      strokeWeight(options.StrokeWeight*0.9);
+
+    if(options.FillMode != 'None'){
+      strokeWeight(options.StrokeWeight);
       if(options.StrokeMode == 'SolidColor'){
         stroke(options.Stroke1);
       }else{
@@ -157,19 +167,17 @@ function drawLine(){
         var between = lerpColor(color(options.Stroke1), color(options.Stroke2), percent);
         stroke(between);
       } 
-
-      if(options.BackgroundMode == "SolidColor"){
-        fill(options.Background1);
-      }else{
-        var percent1 = norm(y, 0, pg.height);
-        var between1 = lerpColor(color(options.Background1), color(options.Background2), percent1);
-        fill(between1);
-      }
-      rect(-20,y,width+60,options.WaveY);
+      fill(options.BgColor);
+      rect(-20,y,width+60,int(options.WaveY));
     }else{
       strokeWeight(options.StrokeWeight);
       noFill();
     }
+
+    if(options.FillMode == 'Gradient2'){
+      image(pgGradient,0,y-n*int(options.WaveY));
+    }
+
   }
   pg.updatePixels();
 }
