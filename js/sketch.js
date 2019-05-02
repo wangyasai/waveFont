@@ -31,6 +31,7 @@ function setup(){
     pgnoise.point(random(w),random(h));
   }
 
+
   n = 5;
 
   pgGradient = createGraphics(w,n*int(options.WaveY));
@@ -74,7 +75,6 @@ function draw(){
     background(0,0,0,0);
   }else if(options.Type == 'SVG'){
     background(0,0,0,0);
-
   }
 
   pg.background(0);
@@ -111,7 +111,8 @@ function drawLine(){
   pg.loadPixels();
   pg.pixelDensity(pixelDensity());
 
-  for(var y = 0; y < pg.height+50; y+=int(options.WaveY)){
+
+  for(var y = 0; y < pg.height; y+=int(options.WaveY)){
     if(options.StrokeMode == 'SolidColor'){
       stroke(options.Stroke1);
     }else if(options.StrokeMode == 'Gradient'){
@@ -119,7 +120,6 @@ function drawLine(){
       var between = lerpColor(color(options.Stroke1), color(options.Stroke2), percent);
       stroke(between);
     }
-
 
     beginShape();
     for(var x = -50 ; x < pg.width+100; x+=int(options.WaveX)){
@@ -131,7 +131,6 @@ function drawLine(){
       blue = pg.pixels[loc+2];
       c = color(red, green, blue);
       value = brightness(c);
-
 
       strokeWeight(options.StrokeWeight);
 
@@ -147,10 +146,7 @@ function drawLine(){
         noFill();
       }
 
-
-     
-        posX = x+randomX[y/int(options.WaveY)];
-   
+      posX = x+randomX[y/int(options.WaveY)];
 
       if(value > options.Brightness){
         var speed = map(options.Speed,0,10,200,1)

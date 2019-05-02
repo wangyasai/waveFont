@@ -20,7 +20,7 @@
   <script type='text/javascript' src="js/p5.min.js"></script>
   <script type='text/javascript' src="js/p5.dom.min.js"></script>
   <script type='text/javascript' src='js/p5.dom.js'></script>
-  <script src="js/p5.svg.js"></script>
+  <script type='text/javascript' src="js/p5.svg.js"></script>
 
   <input id="img-path" type="file" />
   <style type="text/css">
@@ -93,8 +93,8 @@
     <span><a class="icon-instagram" href="http://instagram.com/yasaisai"  target="_blank"  data-icon="&#xe903;"></a></span>
     <span><a class="icon-twitter" href="https://twitter.com/yasai_wang"  target="_blank"  data-icon="&#xe905;"></a></span>
   </div>
-
 </div>
+
 <div class = "logo" style="margin-left:10px; margin-bottom: -40px; "><a href = "https://wangyasai.github.io/designtools.html"><img src="logo.png" style ="width: 40px"></a></div>
 
 
@@ -117,7 +117,7 @@
     NoiseColor : [255,255,255],
     NoiseAlpha : 70,
     Brightness : 50,
-    textWeight : 10,
+    textWeight : 10,  
     Image_DataURL :'',
     textSize: 80,
     Text : "WAVE FONT",
@@ -189,7 +189,7 @@
         var textSize = random(80,120);
         textSizeControl.setValue(textSize);
 
-        setup();
+        // setup();
 
       },
 
@@ -226,6 +226,7 @@ var GuiConfig = function() {
   var folder4 = gui.addFolder('Image');
   var folder5 = gui.addFolder('Save');
 
+
   bgcolorControl = folder1.addColor(options, 'BgColor');
   bgcolorControl.onChange(function(){
     if(options.FillMode != 'None'){
@@ -233,6 +234,7 @@ var GuiConfig = function() {
       print('setup');
     }
   });
+
 
   FillModeControl = folder1.add(options, 'FillMode' , ['None','SolidColor','Gradient1','Gradient2'] );
   FillModeControl.onChange(function(){
@@ -246,7 +248,6 @@ var GuiConfig = function() {
   
   Fill2Control = folder1.addColor(options, 'Fill2');
   Fill2Control.onChange(draw);
-
 
   StrokeModeControl = folder1.add(options, 'StrokeMode', ['SolidColor','Gradient'] );
   StrokeModeControl.onChange(function(){
@@ -327,15 +328,17 @@ var GuiConfig = function() {
       options.FillMode = 'None';
       options.Noise = false;
       setup();
+      noLoop();
       draw();
     }else if(options.Type == 'PNG'){   
       options.FillMode = 'None';
       setup();  
       draw();
+      loop();
     }else if(options.Type == 'JPG'){   
       setup();  
       draw();
-      print('jpg');
+      loop();
     }
   });
 
