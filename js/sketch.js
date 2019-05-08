@@ -24,10 +24,15 @@ function setup(){
   myCanvas.class("myCanvas");
   pg.class("graphic");
 
+
+
+  
+
   pgnoise = createGraphics(w,h);
   pixelDensity(1);
   for(var i = 0; i < 60000; i++){
-    pgnoise.stroke(options.NoiseColor[0],options.NoiseColor[1],options.NoiseColor[2],random(options.NoiseAlpha));
+     var noiseColor = hexToRgb(options.NoiseColor);
+    pgnoise.stroke(noiseColor.r,noiseColor.g,noiseColor.b,random(options.NoiseAlpha));
     pgnoise.point(random(w),random(h));
   }
 
@@ -37,7 +42,8 @@ function setup(){
   pgGradient = createGraphics(w,n*int(options.WaveY));
   for(var i = n/2*int(options.WaveY); i< n*int(options.WaveY);i++){
     var alpha= map(i, n/2*int(options.WaveY), n*int(options.WaveY),0,280);
-    pgGradient.stroke(options.BgColor[0], options.BgColor[1], options.BgColor[2],alpha);
+    var bgColor = hexToRgb(options.BgColor);
+    pgGradient.stroke(bgColor.r, bgColor.g, bgColor.b,alpha);
     pgGradient.line(-10,i,w+10,i);
   }
 
